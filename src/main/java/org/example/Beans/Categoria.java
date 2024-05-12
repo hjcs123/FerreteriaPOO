@@ -3,14 +3,14 @@ package org.example.Beans;
 public class Categoria {
 
     private int id;
-    private String name;
+    private String nombre;
 
     public Categoria() {
     }
 
-    public Categoria(int id, String name) {
+    public Categoria(int id, String nombre) {
         this.id = id;
-        this.name = name;
+        this.nombre = nombre;
     }
 
     public int getId() {
@@ -21,16 +21,11 @@ public class Categoria {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return this.name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }
