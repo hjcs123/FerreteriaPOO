@@ -5,13 +5,13 @@ public class Cliente {
     private String id_cliente;
     private String nombre_cliente;
     private String direccion;
-    private String dni;
+    private Integer dni;
 
 
     public Cliente() {
     }
 
-    public Cliente(String id_cliente, String nombre_cliente, String direccion, String dni) {
+    public Cliente(String id_cliente, String nombre_cliente, String direccion, int dni) {
         this.id_cliente = id_cliente;
         this.nombre_cliente = nombre_cliente;
         this.direccion = direccion;
@@ -42,11 +42,11 @@ public class Cliente {
         this.direccion = direccion;
     }
 
-    public String getDni() {
+    public Integer getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(Integer dni) {
         this.dni = dni;
     }
 
