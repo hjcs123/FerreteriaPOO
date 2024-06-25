@@ -6,9 +6,9 @@ import java.sql.Connection;
 
 public class ConnectionBD {
 
-    private static String BD_NAME = "dbFerreteria";  //nombre como esta en mysql
+    private static String BD_NAME = "dbferreteria";  //nombre como esta en mysql
     private static String USER = "root";
-    private static String PASSWORD = "12346789"; //si no no funciona.
+    private static String PASSWORD = "123456"; //si no no funciona.
     private static String URL = "jdbc:mysql://localhost:3306/" + BD_NAME;
     private static Connection CONN = null;
 
