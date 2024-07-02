@@ -18,7 +18,7 @@ public class Cliente {
         this.dni = dni;
     }
 
-    public String getId_cliente() {
+    public int getId_cliente() {
         return id_cliente;
     }
 

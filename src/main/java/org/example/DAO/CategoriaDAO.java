@@ -1,7 +1,7 @@
 package org.example.DAO;
 
 import org.example.Beans.Categoria;
-import org.example.Beans.Cliente;
+
 import org.example.Config.ConnectionBD;
 
 import java.sql.*;
@@ -69,22 +69,7 @@ public class CategoriaDAO {
         }
     }
 
-    public String agregarCliente(Cliente cliente) throws SQLException{
-        try{
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "INSERT INTO tab_categoria (nombre_cliente, direccion, dni) VALUES (?,?,?)";
-            call = conn.prepareCall(query);
-            call.setString(1, cliente.getNombre_cliente());
-            call.setString(2, cliente.getDireccion());
-            call.setInt(3, cliente.getDni());
-            call.execute();
-            conn.close();
-            return "Se agrego el cliente correctamente";
-        } catch (SQLException e) {
-            System.out.println(e);
-            throw e;
-        }
-    }
+
 
     public String editarCategoria(Categoria categoria) throws SQLException {
         try{
@@ -115,5 +100,36 @@ public class CategoriaDAO {
             throw e;
         }
 
+    }
+
+    public Categoria buscarCategoriaPorNombre(String nombre) throws SQLException {
+        Categoria categoria = null;
+        try {
+
+            Connection conn = (new ConnectionBD()).getConnection();
+
+            // Preparar la consulta
+            String query = "SELECT * FROM tab_categoria WHERE nombre_categoria = ?";
+            call = conn.prepareCall(query);
+            call.setString(1, nombre);
+
+            // Ejecutar la consulta
+            result = call.executeQuery();
+
+            // Si se encuentra una categoría, llenar el objeto Categoria
+            if (result.next()) {
+                categoria = new Categoria();
+                categoria.setId(result.getInt("id_categoria"));
+                categoria.setNombre(result.getString("nombre_categoria"));
+            }
+
+            // Cerrar la conexión
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+
+        return categoria;
     }
 }

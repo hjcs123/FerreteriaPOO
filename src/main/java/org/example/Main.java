@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.Beans.Categoria;
-import org.example.DAO.CategoriaDAO;
 
 public class Main {
     public static void main(String[] args) {
