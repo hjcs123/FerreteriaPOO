@@ -3,6 +3,7 @@ package org.example.DAO;
 import org.example.Beans.Proveedor;
 import org.example.Config.ConnectionBD;
 
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,12 +15,16 @@ public class ProveedorDAO {
     CallableStatement call;
     private ResultSet result;
 
+    public ProveedorDAO() throws SQLException, IOException {
+        this.connection = new ConnectionBD();
+    }
+
     public Proveedor[] getProveedores() throws SQLException {
 
         Proveedor[] proveedores = new Proveedor[10];
         try {
             // Crear la conexión
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             // Preparar la consulta
             String query = "SELECT * FROM tab_proveedor LIMIT 10;";
             call = conn.prepareCall(query);
@@ -59,7 +64,7 @@ public class ProveedorDAO {
 
     public String agregarProveedor(Proveedor proveedor) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "INSERT INTO tab_proveedor (nombre_proveedor, ID_Proveedor, ruc, email, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)";
 
             call = conn.prepareCall(query);
@@ -81,7 +86,7 @@ public class ProveedorDAO {
 
     public String editarProveedor(Proveedor proveedor) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "UPDATE tab_proveedor SET nombre_proveedor = ?, ruc = ?, email = ?, telefono = ?, direccion = ? WHERE ID_Proveedor = ?";
 
             call = conn.prepareCall(query);
@@ -103,7 +108,7 @@ public class ProveedorDAO {
 
     public String eliminarProveedor(int id_proveedor) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "DELETE FROM tab_proveedor WHERE ID_Proveedor = ?";
 
             call = conn.prepareCall(query);

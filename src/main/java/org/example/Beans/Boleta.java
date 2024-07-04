@@ -1,17 +1,16 @@
 package org.example.Beans;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class Boleta {
 
     private int numero_boleta;
-    private LocalDate fecha;
+    private Date fecha;
 
     public Boleta() {
     }
 
-    public Boleta(int numero_boleta, LocalDate fecha) {
+    public Boleta(int numero_boleta, Date fecha) {
         this.numero_boleta = numero_boleta;
         this.fecha = fecha;
 
@@ -29,7 +28,7 @@ public class Boleta {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 }

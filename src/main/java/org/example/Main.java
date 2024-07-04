@@ -1,6 +1,16 @@
 package org.example;
 
 import org.example.Beans.Categoria;
+import org.example.Beans.Cliente;
+import org.example.Beans.Producto;
+import org.example.Beans.Proveedor;
+import org.example.Config.ConnectionBD;
+import org.example.DAO.CategoriaDAO;
+import org.example.DAO.ClienteDAO;
+import org.example.DAO.ProductoDAO;
+import org.example.DAO.ProveedorDAO;
+
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,22 +18,61 @@ public class Main {
         CategoriaDAO categoriaDAO;
 
         try {
-//            Categoria categoriaPrueba = new Categoria();
-//            categoriaPrueba.setId(3);
-//            categoriaPrueba.setNombre("Categoria 3");
 
-            categoriaDAO = new CategoriaDAO();
-//            categoriaDAO.agregarCategoria(categoria1);
-//            categoriaDAO.editarCategoria(categoriaPrueba);
-            categoriaDAO.eliminarCategoria(7);
+            ConnectionBD connectionBD = new ConnectionBD();
+            connectionBD.eliminarDatosTables();
 
-            categoriaDAO = new CategoriaDAO();
-            Categoria[] categorias = categoriaDAO.getCategorias();
+            for (int i = 1; i <= 5; i++) {
+                Categoria categoria = new Categoria();
+                categoria.setNombre("Categoria " + i);
+                categoriaDAO = new CategoriaDAO();
+                categoriaDAO.agregarCategoria(categoria);
+            }
 
-            for (Categoria categoria : categorias) {
-                if (categoria != null) {
-                    System.out.println(categoria.getId() + " " + categoria.getNombre());
-                }
+            System.out.println("Categorias creadas");
+
+//            CREAR 5 PROVEEDORES
+            for (int i = 1; i <= 5; i++) {
+                Proveedor proveedor = new Proveedor();
+                proveedor.setRuc(123456789 + i);
+                proveedor.setNombre_proveedor("Proveedor " + i);
+                proveedor.setDireccion("Direccion " + i);
+                proveedor.setTelefono(123456789);
+                proveedor.setEmail("proveedor" + i + "@gmail.com");
+                ProveedorDAO proveedorDAO = new ProveedorDAO();
+                proveedorDAO.agregarProveedor(proveedor);
+            }
+
+            System.out.println("Proveedores creados");
+
+//            CREAR 5 PRODUCTOS
+            for (int i = 1; i <= 5; i++) {
+                Producto producto = new Producto();
+                producto.setNombre_producto("Producto " + i);
+                producto.setCantidad(10);
+                producto.setPrecio_pro(10.0);
+                ProductoDAO productoDAO = new ProductoDAO();
+                productoDAO.agregarProducto(producto);
+            }
+
+            System.out.println("Productos creados");
+
+//            CREAR 5 CLIENTES
+            for (int i = 0; i < 5; i++) {
+                Cliente cliente = new Cliente();
+                cliente.setDni(12345678 + i);
+                cliente.setNombre_cliente("Cliente " + i);
+                cliente.setDireccion("Direccion " + i);
+                ClienteDAO clienteDAO = new ClienteDAO();
+                clienteDAO.agregarCliente(cliente);
+            }
+
+            System.out.println("Clientes creados");
+
+            CategoriaDAO categoriaDAO1 = new CategoriaDAO();
+            Map<Integer, Categoria> categorias = categoriaDAO1.buscarCategoriaPorNombre("Categoria");
+            for (Categoria categoria : categorias.values()) {
+                System.out.println(categoria.getId());
             }
 
 

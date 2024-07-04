@@ -3,6 +3,7 @@ package org.example.DAO;
 import org.example.Beans.Inventario;
 import org.example.Config.ConnectionBD;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class InventarioDAO {
@@ -11,11 +12,15 @@ public class InventarioDAO {
     CallableStatement call;
     private ResultSet result;
 
+    public InventarioDAO() throws SQLException, IOException {
+        this.connection = new ConnectionBD();
+    }
+
     public Inventario[] getInventarios() throws SQLException {
         Inventario[] inventarios = new Inventario[10];
         try {
             // Crear la conexión
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             // Preparar la consulta
             String query = "SELECT * FROM tab_inventario LIMIT 10;";
             call = conn.prepareCall(query);
@@ -52,7 +57,7 @@ public class InventarioDAO {
 
     public String agregarInventario(Inventario inventario) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "INSERT INTO tab_inventario (codProducto, nombreProducto, precioU) VALUES (?, ?, ?)";
 
             call = conn.prepareCall(query);
@@ -71,7 +76,7 @@ public class InventarioDAO {
 
     public String editarInventario(Inventario inventario) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "UPDATE tab_inventario SET nombreProducto = ?, precioU = ? WHERE codProducto = ?";
 
             call = conn.prepareCall(query);
@@ -90,7 +95,7 @@ public class InventarioDAO {
 
     public String eliminarInventario(String codProducto) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "DELETE FROM tab_inventario WHERE codProducto = ?";
 
             call = conn.prepareCall(query);
@@ -108,7 +113,7 @@ public class InventarioDAO {
     public Inventario buscarInventarioPorNombre(String nombreProducto) throws SQLException {
         Inventario inventario = null;
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
 
             // Preparar la consulta
             String query = "SELECT * FROM tab_inventario WHERE nombreProducto = ?";

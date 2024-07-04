@@ -3,6 +3,7 @@ package org.example.DAO;
 import org.example.Beans.Usuario;
 import org.example.Config.ConnectionBD;
 
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,12 +15,16 @@ public class UsuarioDAO {
     CallableStatement call;
     private ResultSet result;
 
+    public UsuarioDAO() throws SQLException, IOException {
+        this.connection = new ConnectionBD();
+    }
+
     public Usuario[] getUsuario() throws SQLException {
 
         Usuario[] usuarios = new Usuario[10];
         try {
             // Crear la conexión
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             // Preparar la consulta
             String query = "SELECT * FROM tab_usuario LIMIT 10;";
             call = conn.prepareCall(query);
@@ -56,7 +61,7 @@ public class UsuarioDAO {
 
     public String agregarUsuario(Usuario usuario) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "INSERT INTO tab_usuario (id_usuario, nombre_usuario, edad) VALUES (?, ?, ?)";
 
             call = conn.prepareCall(query);
@@ -75,7 +80,7 @@ public class UsuarioDAO {
 
     public String editarUsuario(Usuario usuario) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "UPDATE tab_usuario SET nombre_usuario = ?, edad = ? WHERE id_usuario = ?";
 
             call = conn.prepareCall(query);
@@ -94,7 +99,7 @@ public class UsuarioDAO {
 
     public String eliminarUsuario(int id_usuario) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "DELETE FROM tab_usuario WHERE id_usuario = ?";
 
             call = conn.prepareCall(query);

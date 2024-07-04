@@ -3,6 +3,7 @@ package org.example.DAO;
 import org.example.Beans.Producto;
 import org.example.Config.ConnectionBD;
 
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,11 +15,15 @@ public class ProductoDAO {
     CallableStatement call;
     private ResultSet result;
 
+    public ProductoDAO() throws SQLException, IOException {
+        this.connection = new ConnectionBD();
+    }
+
     public Producto[] getProductos() throws SQLException {
         Producto[] productos = new Producto[10];
         try {
             // Crear la conexión
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             // Preparar la consulta
             String query = "SELECT * FROM tab_producto LIMIT 10;";
             call = conn.prepareCall(query);
@@ -56,7 +61,7 @@ public class ProductoDAO {
 
     public String agregarProducto(Producto producto) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "INSERT INTO tab_producto (id_producto, nombre_producto, cantidad, precio) VALUES (?, ?, ?, ?)";
 
             call = conn.prepareCall(query);
@@ -76,7 +81,7 @@ public class ProductoDAO {
 
     public String editarProducto(Producto producto) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "UPDATE tab_producto SET nombre_producto = ?, cantidad = ?, precio = ? WHERE id_producto = ?";
 
             call = conn.prepareCall(query);
@@ -96,7 +101,7 @@ public class ProductoDAO {
 
     public String eliminarProducto(int id_producto) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "DELETE FROM tab_producto WHERE id_producto = ?";
 
             call = conn.prepareCall(query);

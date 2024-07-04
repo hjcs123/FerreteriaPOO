@@ -3,6 +3,8 @@ package org.example.DAO;
 
 import org.example.Beans.Cliente;
 import org.example.Config.ConnectionBD;
+
+import java.io.IOException;
 import java.sql.*;
 
 public class ClienteDAO {
@@ -11,13 +13,17 @@ public class ClienteDAO {
     CallableStatement call;
     private ResultSet result;
 
+    public ClienteDAO() throws SQLException, IOException {
+        this.connection = new ConnectionBD();
+    }
+
     public Cliente[] getCliente() throws SQLException {
 //        DECLARAR UN ARREGLO DE CLIENTE VACIO
         Cliente[] clientes = new Cliente[10];
         try {
 
             //        CREAR LA CONEXION
-        Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             //        PREPARAR LA CONSULTA
             String query = "SELECT * FROM tab_cliente LIMIT 10;";
             call = conn.prepareCall(query);
@@ -49,21 +55,20 @@ public class ClienteDAO {
 
 //       RETORNAR EL RESULTADO
             return clientes;
-            }
-
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
 
     }
-    public String agregarCliente( Cliente cliente) throws SQLException{
+
+    public String agregarCliente(Cliente cliente) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "INSERT INTO clientes (id_cliente, nombre_cliente, direccion, dni) VALUES (?, ?, ?, ?)";
+            Connection conn = connection.getConnection();
+            String query = "INSERT INTO tab_cliente (id_cliente, nombre_cliente, direccion, dni) VALUES (?, ?, ?, ?)";
 
             call = conn.prepareCall(query);
-            call.setInt(1, cliente.getId_cliente());
+            call.setString(1, cliente.getId_cliente());
             call.setString(2, cliente.getNombre_cliente());
             call.setString(3, cliente.getDireccion());
             call.setInt(4, cliente.getDni());
@@ -79,42 +84,35 @@ public class ClienteDAO {
     }
 
     public String editarCliente(Cliente cliente) throws SQLException {
-        try{
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "INSERT INTO boletas (id_cliente, nombre_cliente, direccion, dni) VALUES (?, ?, ?, ?, ?)";
+        try {
+            Connection conn = connection.getConnection();
+            String query = "UPDATE tab_cliente SET nombre_cliente = ?, direccion = ?, dni = ? WHERE id_cliente = ?";
 
             call = conn.prepareCall(query);
             call = conn.prepareCall(query);
-            call.setInt(1, cliente.getId_cliente());
+            call.setString(1, cliente.getId_cliente());
             call.setString(2, cliente.getNombre_cliente());
             call.setString(3, cliente.getDireccion());
             call.setInt(4, cliente.getDni());
             call.execute();
             conn.close();
             return "Se edito la boleta correctamente";
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
     }
 
     public String eliminarCliente(Cliente cliente) throws SQLException {
-        try{
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "INSERT INTO boletas (id_cliente, nombre_cliente, direccion, dni) VALUES (?, ?, ?, ?, ?)";
-
+        try {
+            Connection conn = connection.getConnection();
+            String query = "DELETE FROM tab_cliente WHERE id_cliente = ?";
             call = conn.prepareCall(query);
-            call = conn.prepareCall(query);
-            call.setInt(1, cliente.getId_cliente());
-            call.setString(2, cliente.getNombre_cliente());
-            call.setString(3, cliente.getDireccion());
-            call.setInt(4, cliente.getDni());
+            call.setString(1, cliente.getId_cliente());
             call.execute();
             conn.close();
-            return "Se edito la boleta correctamente";
-        }
-        catch (SQLException e) {
+            return "Se elimino el cliente correctamente";
+        } catch (SQLException e) {
             System.out.println(e);
             throw e;
 

@@ -1,10 +1,12 @@
 package org.example.DAO;
 
 import org.example.Beans.Categoria;
-
 import org.example.Config.ConnectionBD;
 
+import java.io.IOException;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CategoriaDAO {
 
@@ -12,40 +14,24 @@ public class CategoriaDAO {
     CallableStatement call;
     private ResultSet result;
 
-    public Categoria[] getCategorias() throws SQLException {
-//        DECLARAR UN ARREGLO DE CATEGORIAS VACIO
-        Categoria[] categorias = new Categoria[10];
+    public CategoriaDAO() throws SQLException, IOException {
+        this.connection = new ConnectionBD();
+    }
+
+    public Map<Integer, Categoria> getCategorias() throws SQLException {
+        Map<Integer, Categoria> categorias = new HashMap<>();
         try {
-
-//        CREAR LA CONEXION
-            Connection conn = (new ConnectionBD()).getConnection();
-
-//        PREPARAR LA CONSULTA
-            String query = "SELECT * FROM tab_categoria LIMIT 10;";
+            Connection conn = connection.getConnection();
+            String query = "SELECT * FROM tab_categoria;";
             call = conn.prepareCall(query);
-
-//        EJECUTAR LA CONSULTA
             result = call.executeQuery();
-
-//        CONTADOR PARA EL ARREGLO
-            int i = 0;
-//        RECORRER EL RESULTADO
             while (result.next()) {
-//            CREAR UN OBJETO CATEGORIA
                 Categoria categoria = new Categoria();
-
-//            LLENAR EL OBJETO CATEGORIA
-                categoria.setId(result.getInt(1));
-                categoria.setNombre(result.getString(2));
-
-//            AGREGAR LA CATEGORIA AL ARREGLO
-                categorias[i] = categoria;
-                i++;
+                categoria.setId(result.getInt("id_categoria"));
+                categoria.setNombre(result.getString("nombre_categoria"));
+                categorias.put(categoria.getId(), categoria);
             }
-//        CERRAR LA CONEXION
             conn.close();
-
-//       RETORNAR EL RESULTADO
             return categorias;
         } catch (SQLException e) {
             System.out.println(e);
@@ -53,83 +39,70 @@ public class CategoriaDAO {
         }
     }
 
-
-    public String agregarCategoria(Categoria categoria) throws SQLException{
-        try{
-            Connection conn = (new ConnectionBD()).getConnection();
+    public String agregarCategoria(Categoria categoria) throws SQLException {
+        try {
+            Connection conn = connection.getConnection();
             String query = "INSERT INTO tab_categoria (nombre_categoria) VALUES (?)";
             call = conn.prepareCall(query);
             call.setString(1, categoria.getNombre());
             call.execute();
             conn.close();
-            return "Se agrego la categoria correctamente";
+            return "Se agregó la categoría correctamente";
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
     }
 
-
-
     public String editarCategoria(Categoria categoria) throws SQLException {
-        try{
-            Connection conn = (new ConnectionBD()).getConnection();
+        try {
+            Connection conn = connection.getConnection();
             String query = "UPDATE tab_categoria SET nombre_categoria = ? WHERE id_categoria = ?";
             call = conn.prepareCall(query);
             call.setString(1, categoria.getNombre());
             call.setInt(2, categoria.getId());
             call.execute();
             conn.close();
-            return "Se edito la categoria correctamente";
-        }catch (SQLException e) {
+            return "Se editó la categoría correctamente";
+        } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
     }
 
     public void eliminarCategoria(int idCategoria) throws SQLException {
-        try{
-            Connection conn = (new ConnectionBD()).getConnection();
+        try {
+            Connection conn = connection.getConnection();
             String query = "DELETE FROM tab_categoria WHERE id_categoria = ?";
             call = conn.prepareCall(query);
             call.setInt(1, idCategoria);
             call.execute();
             conn.close();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
-
     }
 
-    public Categoria buscarCategoriaPorNombre(String nombre) throws SQLException {
-        Categoria categoria = null;
+    public Map<Integer, Categoria> buscarCategoriaPorNombre(String nombre) throws SQLException {
+        Map<Integer, Categoria> categorias = new HashMap<>();
         try {
-
-            Connection conn = (new ConnectionBD()).getConnection();
-
-            // Preparar la consulta
-            String query = "SELECT * FROM tab_categoria WHERE nombre_categoria = ?";
+            Connection conn = connection.getConnection();
+            String query = "SELECT * FROM tab_categoria WHERE nombre_categoria LIKE '%' || ? || '%';";
             call = conn.prepareCall(query);
             call.setString(1, nombre);
-
-            // Ejecutar la consulta
             result = call.executeQuery();
-
-            // Si se encuentra una categoría, llenar el objeto Categoria
-            if (result.next()) {
-                categoria = new Categoria();
+            while (result.next()) {
+                Categoria categoria = new Categoria();
                 categoria.setId(result.getInt("id_categoria"));
                 categoria.setNombre(result.getString("nombre_categoria"));
+                categorias.put(categoria.getId(), categoria);
             }
-
-            // Cerrar la conexión
             conn.close();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
-
-        return categoria;
+        return categorias;
     }
 }

@@ -5,6 +5,7 @@ import org.example.Beans.Cliente;
 import org.example.Beans.Producto;
 import org.example.Config.ConnectionBD;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class BoletaDAO {
@@ -13,10 +14,14 @@ public class BoletaDAO {
     CallableStatement call;
     private ResultSet result;
 
+    public BoletaDAO() throws SQLException, IOException {
+        this.connection = new ConnectionBD();
+    }
+
     public Boleta[] getBoleta() throws SQLException {
         Boleta[] boletas = new Boleta[10];
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "SELECT * FROM tab_boleta LIMIT 10;";
             call = conn.prepareCall(query);
             result = call.executeQuery();
@@ -24,7 +29,7 @@ public class BoletaDAO {
             while (result.next()) {
                 Boleta boleta = new Boleta();
                 boleta.setNumero_boleta(result.getInt("id_boleta"));
-                boleta.setFecha(result.getDate("f_boleta").toLocalDate());
+                boleta.setFecha(result.getDate("f_boleta"));
                 boletas[i] = boleta;
                 i++;
             }
@@ -38,12 +43,12 @@ public class BoletaDAO {
 
     public String agregarBoleta(Boleta boleta, Cliente cliente, Producto producto) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "INSERT INTO tab_boleta (id_boleta, f_boleta, cod_usuario, cod_Producto) VALUES (?, ?, ?, ?)";
             call = conn.prepareCall(query);
             call.setInt(1, boleta.getNumero_boleta());
             call.setDate(2, boleta.getFecha());
-            call.setInt(3, cliente.getId_cliente());
+            call.setString(3, cliente.getId_cliente());
             call.setInt(4, producto.getId_producto());
             call.execute();
             conn.close();
@@ -56,11 +61,11 @@ public class BoletaDAO {
 
     public String editarBoleta(Boleta boleta, Cliente cliente, Producto producto) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "UPDATE tab_boleta SET f_boleta = ?, cod_usuario = ?, cod_Producto = ? WHERE id_boleta = ?";
             call = conn.prepareCall(query);
             call.setDate(1, boleta.getFecha());
-            call.setInt(2, cliente.getId_cliente());
+            call.setString(2, cliente.getId_cliente());
             call.setInt(3, producto.getId_producto());
             call.setInt(4, boleta.getNumero_boleta());
             call.execute();
@@ -74,7 +79,7 @@ public class BoletaDAO {
 
     public void eliminarBoleta(int idBoleta) throws SQLException {
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "DELETE FROM tab_boleta WHERE id_boleta = ?";
             call = conn.prepareCall(query);
             call.setInt(1, idBoleta);
@@ -89,7 +94,7 @@ public class BoletaDAO {
     public Boleta buscarBoletaPorNumero(int idBoleta) throws SQLException {
         Boleta boleta = null;
         try {
-            Connection conn = (new ConnectionBD()).getConnection();
+            Connection conn = connection.getConnection();
             String query = "SELECT * FROM tab_boleta WHERE id_boleta = ?";
             call = conn.prepareCall(query);
             call.setInt(1, idBoleta);
@@ -97,7 +102,7 @@ public class BoletaDAO {
             if (result.next()) {
                 boleta = new Boleta();
                 boleta.setNumero_boleta(result.getInt("id_boleta"));
-                boleta.setFecha(result.getDate("f_boleta").toLocalDate());
+                boleta.setFecha(result.getDate("f_boleta"));
             }
             conn.close();
         } catch (SQLException e) {
