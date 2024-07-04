@@ -26,19 +26,19 @@ public class BoletaDAO {
             call = conn.prepareCall(query);
             result = call.executeQuery();
             int i = 0;
-            while (result.next()) {
+            while (result.next() && i < boletas.length) {
                 Boleta boleta = new Boleta();
                 boleta.setNumero_boleta(result.getInt("id_boleta"));
+                boleta.setFecha(result.getDate("f_boleta"));
                 boleta.setFecha(result.getDate("f_boleta"));
                 boletas[i] = boleta;
                 i++;
             }
-            conn.close();
-            return boletas;
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
+        return boletas;
     }
 
     public String agregarBoleta(Boleta boleta, Cliente cliente, Producto producto) throws SQLException {
@@ -104,7 +104,6 @@ public class BoletaDAO {
                 boleta.setNumero_boleta(result.getInt("id_boleta"));
                 boleta.setFecha(result.getDate("f_boleta"));
             }
-            conn.close();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

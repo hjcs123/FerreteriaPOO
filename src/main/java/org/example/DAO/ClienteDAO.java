@@ -1,6 +1,5 @@
 package org.example.DAO;
 
-
 import org.example.Beans.Cliente;
 import org.example.Config.ConnectionBD;
 
@@ -18,7 +17,6 @@ public class ClienteDAO {
     }
 
     public Cliente[] getCliente() throws SQLException {
-//        DECLARAR UN ARREGLO DE CLIENTE VACIO
         Cliente[] clientes = new Cliente[10];
         try {
 
@@ -33,22 +31,14 @@ public class ClienteDAO {
 
 //        CONTADOR PARA EL ARREGLO
             int i = 0;
-//        RECORRER EL RESULTADO
-            while (result.next()) {
-//            CREAR UN OBJETO CLIENTE
+            while (result.next() && i < clientes.length) {
                 Cliente cliente = new Cliente();
-
-//            LLENAR EL OBJETO BOLETA
                 cliente.setId_cliente(result.getString(1));
                 cliente.setNombre_cliente(result.getString(2));
                 cliente.setDireccion(result.getString(3));
                 cliente.setDni(result.getInt(4));
-
-
-//            AGREGAR LA BOLETA AL ARREGLO
                 clientes[i] = cliente;
                 i++;
-
             }
             //        CERRAR LA CONEXION
             conn.close();
@@ -59,7 +49,7 @@ public class ClienteDAO {
             System.out.println(e);
             throw e;
         }
-
+        return clientes;
     }
 
     public String agregarCliente(Cliente cliente) throws SQLException {
@@ -80,7 +70,6 @@ public class ClienteDAO {
             System.out.println(e);
             throw e;
         }
-
     }
 
     public String editarCliente(Cliente cliente) throws SQLException {
@@ -115,8 +104,6 @@ public class ClienteDAO {
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
-
         }
-
     }
 }

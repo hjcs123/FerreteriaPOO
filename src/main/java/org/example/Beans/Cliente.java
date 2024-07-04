@@ -7,7 +7,6 @@ public class Cliente {
     private String direccion;
     private Integer dni;
 
-
     public Cliente() {
     }
 
@@ -55,4 +54,3 @@ public class Cliente {
         return this.nombre_cliente;
     }
 }
-
