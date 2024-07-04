@@ -2,14 +2,12 @@ package VISTAS;
 
 import javax.swing.*;
 
-public class BOLETA {
-    private JPanel jBoleta;
-    private JLabel lnl_ncliente;
-    private JLabel lblDireccionC;
-    private JButton AGREGARButton;
-    private JButton MODIFICARButton;
-    private JButton ELIMINARButton;
-    private JButton BUSCARButton;
-    private JButton ORDENARButton;
-    private JTable tableBoleta;
+public class Boleta {
+    private JPanel panel1;
+    private JButton button1;
+    private JButton button2;
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
