@@ -9,44 +9,36 @@ import java.sql.*;
 
 public class BoletaDAO {
 
-    ConnectionBD connection;
-    CallableStatement call;
-    private ResultSet result;
-
     public Boleta[] getBoleta() throws SQLException {
         Boleta[] boletas = new Boleta[10];
-        try {
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "SELECT * FROM tab_boleta LIMIT 10;";
-            call = conn.prepareCall(query);
-            result = call.executeQuery();
+        String query = "SELECT * FROM tab_boleta LIMIT 10";
+        try (Connection conn = (new ConnectionBD()).getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet result = stmt.executeQuery()) {
             int i = 0;
-            while (result.next()) {
+            while (result.next() && i < boletas.length) {
                 Boleta boleta = new Boleta();
                 boleta.setNumero_boleta(result.getInt("id_boleta"));
-                boleta.setFecha(result.getDate("f_boleta").toLocalDate());
+                boleta.setFecha(result.getDate("f_boleta"));
                 boletas[i] = boleta;
                 i++;
             }
-            conn.close();
-            return boletas;
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
+        return boletas;
     }
 
     public String agregarBoleta(Boleta boleta, Cliente cliente, Producto producto) throws SQLException {
-        try {
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "INSERT INTO tab_boleta (id_boleta, f_boleta, cod_usuario, cod_Producto) VALUES (?, ?, ?, ?)";
-            call = conn.prepareCall(query);
-            call.setInt(1, boleta.getNumero_boleta());
-            call.setDate(2, boleta.getFecha());
-            call.setInt(3, cliente.getId_cliente());
-            call.setInt(4, producto.getId_producto());
-            call.execute();
-            conn.close();
+        String query = "INSERT INTO tab_boleta (id_boleta, f_boleta, cod_usuario, cod_Producto) VALUES (?, ?, ?, ?)";
+        try (Connection conn = (new ConnectionBD()).getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, boleta.getNumero_boleta());
+            stmt.setDate(2, boleta.getFecha());
+            stmt.setInt(3, Integer.parseInt(cliente.getId_cliente()));
+            stmt.setInt(4, producto.getId_producto());
+            stmt.execute();
             return "Se agregó la boleta correctamente";
         } catch (SQLException e) {
             System.out.println(e);
@@ -55,16 +47,14 @@ public class BoletaDAO {
     }
 
     public String editarBoleta(Boleta boleta, Cliente cliente, Producto producto) throws SQLException {
-        try {
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "UPDATE tab_boleta SET f_boleta = ?, cod_usuario = ?, cod_Producto = ? WHERE id_boleta = ?";
-            call = conn.prepareCall(query);
-            call.setDate(1, boleta.getFecha());
-            call.setInt(2, cliente.getId_cliente());
-            call.setInt(3, producto.getId_producto());
-            call.setInt(4, boleta.getNumero_boleta());
-            call.execute();
-            conn.close();
+        String query = "UPDATE tab_boleta SET f_boleta = ?, cod_usuario = ?, cod_Producto = ? WHERE id_boleta = ?";
+        try (Connection conn = (new ConnectionBD()).getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, boleta.getNumero_boleta());
+            stmt.setDate(2, boleta.getFecha());
+            stmt.setInt(3, Integer.parseInt(cliente.getId_cliente()));
+            stmt.setInt(4, producto.getId_producto());
+            stmt.execute();
             return "Se editó la boleta correctamente";
         } catch (SQLException e) {
             System.out.println(e);
@@ -73,13 +63,11 @@ public class BoletaDAO {
     }
 
     public void eliminarBoleta(int idBoleta) throws SQLException {
-        try {
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "DELETE FROM tab_boleta WHERE id_boleta = ?";
-            call = conn.prepareCall(query);
-            call.setInt(1, idBoleta);
-            call.execute();
-            conn.close();
+        String query = "DELETE FROM tab_boleta WHERE id_boleta = ?";
+        try (Connection conn = (new ConnectionBD()).getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, idBoleta);
+            stmt.execute();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
@@ -88,18 +76,17 @@ public class BoletaDAO {
 
     public Boleta buscarBoletaPorNumero(int idBoleta) throws SQLException {
         Boleta boleta = null;
-        try {
-            Connection conn = (new ConnectionBD()).getConnection();
-            String query = "SELECT * FROM tab_boleta WHERE id_boleta = ?";
-            call = conn.prepareCall(query);
-            call.setInt(1, idBoleta);
-            result = call.executeQuery();
-            if (result.next()) {
-                boleta = new Boleta();
-                boleta.setNumero_boleta(result.getInt("id_boleta"));
-                boleta.setFecha(result.getDate("f_boleta").toLocalDate());
+        String query = "SELECT * FROM tab_boleta WHERE id_boleta = ?";
+        try (Connection conn = (new ConnectionBD()).getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, idBoleta);
+            try (ResultSet result = stmt.executeQuery()) {
+                if (result.next()) {
+                    boleta = new Boleta();
+                    boleta.setNumero_boleta(result.getInt("id_boleta"));
+                    boleta.setFecha(result.getDate("f_boleta"));
+                }
             }
-            conn.close();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

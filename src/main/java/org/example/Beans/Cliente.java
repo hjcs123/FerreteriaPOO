@@ -7,7 +7,6 @@ public class Cliente {
     private String direccion;
     private Integer dni;
 
-
     public Cliente() {
     }
 
@@ -18,7 +17,7 @@ public class Cliente {
         this.dni = dni;
     }
 
-    public int getId_cliente() {
+    public String getId_cliente() {
         return id_cliente;
     }
 
@@ -55,4 +54,3 @@ public class Cliente {
         return this.nombre_cliente;
     }
 }
-

@@ -132,4 +132,26 @@ public class CategoriaDAO {
 
         return categoria;
     }
+    public Categoria[] getCategoriasOrdenadasPorNombre() throws SQLException {
+        Categoria[] categorias = new Categoria[10];
+        try {
+            Connection conn = (new ConnectionBD()).getConnection();
+            String query = "SELECT * FROM tab_categoria ORDER BY nombre_categoria ASC LIMIT 10;";
+            call = conn.prepareCall(query);
+            result = call.executeQuery();
+            int i = 0;
+            while (result.next()) {
+                Categoria categoria = new Categoria();
+                categoria.setId(result.getInt("id_categoria"));
+                categoria.setNombre(result.getString("nombre_categoria"));
+                categorias[i] = categoria;
+                i++;
+            }
+            conn.close();
+            return categorias;
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+    }
 }

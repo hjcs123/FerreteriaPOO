@@ -5,7 +5,7 @@ import org.example.Beans.Categoria;
 public class Main {
     public static void main(String[] args) {
 
-        CategoriaDAO categoriaDAO;
+        /*CategoriaDAO categoriaDAO;
 
         try {
 //            Categoria categoriaPrueba = new Categoria();
@@ -31,5 +31,5 @@ public class Main {
             e.printStackTrace();
         }
 
-    }
+ */   }
 }
