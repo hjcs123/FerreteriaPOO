@@ -5,14 +5,24 @@ public class Usuario {
     private int id_usuario;
     private String nombre_usuario;
     private int edad;
+    private String password;
+
 
     public Usuario() {
+
     }
 
-    public Usuario(String nombre_usuario, int id_usuario, int edad) {
+    public Usuario(String nombre_usuario, int edad, String password) {
         this.nombre_usuario = nombre_usuario;
-        this.id_usuario = id_usuario;
         this.edad = edad;
+        this.password = password;
+    }
+
+    public Usuario(int id_usuario, String nombre_usuario, int edad, String password) {
+        this.id_usuario = id_usuario;
+        this.nombre_usuario = nombre_usuario;
+        this.edad = edad;
+        this.password = password;
     }
 
     public int getId_usuario() {
@@ -39,9 +49,11 @@ public class Usuario {
         this.edad = edad;
     }
 
-    @Override
-    public String toString() {
+    public String getPassword() {
+        return password;
+    }
 
-        return this.nombre_usuario;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

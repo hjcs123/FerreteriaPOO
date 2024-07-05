@@ -2,7 +2,7 @@ package VISTAS;
 
 import javax.swing.*;
 
-public class PRODUCTO {
+public class PRODUCTO extends JFrame {
     private JTextField txtIdPro;
     private JTextField txtNombrePro;
     private JTextField txtCantidadPro;

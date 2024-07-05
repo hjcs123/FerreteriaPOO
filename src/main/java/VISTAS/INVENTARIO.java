@@ -1,4 +1,6 @@
 package VISTAS;
 
-public class INVENTARIO {
+import javax.swing.*;
+
+public class INVENTARIO extends JFrame {
 }

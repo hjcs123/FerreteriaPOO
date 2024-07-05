@@ -17,6 +17,13 @@ public class Cliente {
         this.dni = dni;
     }
 
+    public Cliente(String nombre_cliente, String direccion, int dni) {
+        this.id_cliente = "";
+        this.nombre_cliente = nombre_cliente;
+        this.direccion = direccion;
+        this.dni = dni;
+    }
+
     public String getId_cliente() {
         return this.id_cliente;
     }

@@ -2,7 +2,7 @@ package VISTAS;
 
 import javax.swing.*;
 
-public class usuario {
+public class usuario extends JFrame {
     private JPanel jUsuario;
     private JTextField txtNusuario;
     private JTextField txtIdusuario;

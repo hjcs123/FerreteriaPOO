@@ -2,7 +2,7 @@ package VISTAS;
 
 import javax.swing.*;
 
-public class PROVEEDOR {
+public class PROVEEDOR extends JFrame {
     private JTextField txtNombrePro;
     private JTable tableProveedor;
     private JTextField txtIdProv;

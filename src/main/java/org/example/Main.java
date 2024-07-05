@@ -1,5 +1,8 @@
 package org.example;
 
+import VISTAS.CLIENTE;
+import VISTAS.FERRETERIA;
+import VISTAS.LOGIN;
 import org.example.Beans.Categoria;
 import org.example.Beans.Cliente;
 import org.example.Beans.Producto;
@@ -10,10 +13,13 @@ import org.example.DAO.ClienteDAO;
 import org.example.DAO.ProductoDAO;
 import org.example.DAO.ProveedorDAO;
 
+import javax.swing.*;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, IOException {
 
         /*CategoriaDAO categoriaDAO;
 
@@ -80,5 +86,16 @@ public class Main {
             e.printStackTrace();
         }
 
- */   }
+
+ */
+
+//        public static void main(String[] args) throws SQLException, IOException {
+        JFrame frame = new JFrame("LOGIN");
+        frame.setContentPane(new LOGIN().panelLogin);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+//        }
+
+    }
 }

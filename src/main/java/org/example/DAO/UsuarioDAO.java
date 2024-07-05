@@ -8,6 +8,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class UsuarioDAO {
 
@@ -19,55 +20,38 @@ public class UsuarioDAO {
         this.connection = new ConnectionBD();
     }
 
-    public Usuario[] getUsuario() throws SQLException {
-
-        Usuario[] usuarios = new Usuario[10];
+    public HashMap<Integer, Usuario> getUsuarios() throws SQLException {
+        HashMap<Integer, Usuario> usuarios = new HashMap<>();
         try {
-            // Crear la conexión
             Connection conn = connection.getConnection();
-            // Preparar la consulta
-            String query = "SELECT * FROM tab_usuario LIMIT 10;";
+            String query = "SELECT * FROM tab_usuario;";
             call = conn.prepareCall(query);
-
-            // Ejecutar la consulta
             result = call.executeQuery();
 
-            // Contador para el arreglo
-            int i = 0;
-            // Recorrer el resultado
             while (result.next()) {
-                // Crear un objeto Usuario
                 Usuario usuario = new Usuario();
-
-                // Llenar el objeto Usuario
                 usuario.setId_usuario(result.getInt("id_usuario"));
                 usuario.setNombre_usuario(result.getString("nombre_usuario"));
                 usuario.setEdad(result.getInt("edad"));
-
-                // Agregar el usuario al arreglo
-                usuarios[i] = usuario;
-                i++;
+                usuarios.put(usuario.getId_usuario(), usuario);
             }
-            // Cerrar la conexión
             conn.close();
-
-            // Retornar el resultado
-            return usuarios;
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
+        return usuarios;
     }
 
     public String agregarUsuario(Usuario usuario) throws SQLException {
         try {
             Connection conn = connection.getConnection();
-            String query = "INSERT INTO tab_usuario (id_usuario, nombre_usuario, edad) VALUES (?, ?, ?)";
+            String query = "INSERT INTO tab_usuario (nombre_usuario, edad, password) VALUES (?, ?, ?)";
 
             call = conn.prepareCall(query);
-            call.setInt(1, usuario.getId_usuario());
-            call.setString(2, usuario.getNombre_usuario());
-            call.setInt(3, usuario.getEdad());
+            call.setString(1, usuario.getNombre_usuario());
+            call.setInt(2, usuario.getEdad());
+            call.setString(3, usuario.getPassword()); // Se asume que has añadido este campo a la clase Usuario
 
             call.execute();
             conn.close();
@@ -81,12 +65,13 @@ public class UsuarioDAO {
     public String editarUsuario(Usuario usuario) throws SQLException {
         try {
             Connection conn = connection.getConnection();
-            String query = "UPDATE tab_usuario SET nombre_usuario = ?, edad = ? WHERE id_usuario = ?";
+            String query = "UPDATE tab_usuario SET nombre_usuario = ?, edad = ?, password = ? WHERE id_usuario = ?";
 
             call = conn.prepareCall(query);
             call.setString(1, usuario.getNombre_usuario());
             call.setInt(2, usuario.getEdad());
-            call.setInt(3, usuario.getId_usuario());
+            call.setString(3, usuario.getPassword());
+            call.setInt(4, usuario.getId_usuario());
 
             call.execute();
             conn.close();
@@ -112,5 +97,27 @@ public class UsuarioDAO {
             System.out.println(e);
             throw e;
         }
+    }
+
+    public boolean autenticarUsuario(String nombre_usuario, String password) throws SQLException {
+        boolean autenticado = false;
+        try {
+            Connection conn = connection.getConnection();
+            String query = "SELECT * FROM tab_usuario WHERE nombre_usuario = ? AND password = ?";
+
+            call = conn.prepareCall(query);
+            call.setString(1, nombre_usuario);
+            call.setString(2, password);
+            result = call.executeQuery();
+
+            if (result.next()) {
+                autenticado = true;
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+        return autenticado;
     }
 }
