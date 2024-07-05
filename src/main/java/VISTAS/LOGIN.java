@@ -45,6 +45,16 @@ public class LOGIN {
 
             }
         });
+
+
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("FERRETERIA");
+        frame.setContentPane(new FERRETERIA().panelMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }

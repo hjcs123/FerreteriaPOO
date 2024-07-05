@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="@localhost">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.49">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.52">
     <root id="1">
       <DefaultCasing>lower/lower</DefaultCasing>
       <DefaultEngine>InnoDB</DefaultEngine>
@@ -191,7 +191,7 @@
 |root||user_portal||grant option|G
 performance_schema|schema||mysql.session|localhost|SELECT|G
 sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
-      <ServerVersion>8.2.0</ServerVersion>
+      <ServerVersion>8.4.0</ServerVersion>
     </root>
     <collation id="2" parent="1" name="armscii8_general_ci">
       <Charset>armscii8</Charset>
@@ -1135,8 +1135,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="302" parent="1" name="dbferreteria">
-      <IntrospectionTimestamp>2024-07-04.16:49:57</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2024-07-05.02:49:57</LocalIntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-07-05.17:06:27</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="303" parent="1" name="db_tecnimotors">
@@ -1203,8 +1202,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
     <column id="320" parent="313" name="id">
-      <AutoIncrement>1</AutoIncrement>
-      <DasType>int|0s</DasType>
+      <DasType>int unsigned|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
@@ -1214,6 +1212,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </column>
     <column id="322" parent="313" name="fecha">
       <DasType>date|0s</DasType>
+      <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
     <index id="323" parent="313" name="PRIMARY">
@@ -1227,13 +1226,13 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="325" parent="314" name="id_categoria">
-      <AutoIncrement>103</AutoIncrement>
-      <DasType>int unsigned|0s</DasType>
+      <AutoIncrement>1</AutoIncrement>
+      <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
     <column id="326" parent="314" name="nombre_categoria">
-      <DasType>varchar(100)|0s</DasType>
+      <DasType>varchar(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
@@ -1248,7 +1247,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="329" parent="315" name="id_cliente">
-      <AutoIncrement>71</AutoIncrement>
+      <AutoIncrement>1</AutoIncrement>
       <DasType>int unsigned|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1306,7 +1305,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="340" parent="317" name="id_producto">
-      <AutoIncrement>82</AutoIncrement>
+      <AutoIncrement>1</AutoIncrement>
       <DasType>int unsigned|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1336,14 +1335,14 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="346" parent="318" name="nombre_proveedor">
-      <DasType>varchar(100)|0s</DasType>
+    <column id="346" parent="318" name="ID_Proveedor">
+      <AutoIncrement>1</AutoIncrement>
+      <DasType>int unsigned|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="347" parent="318" name="ID_Proveedor">
-      <AutoIncrement>56</AutoIncrement>
-      <DasType>int unsigned|0s</DasType>
+    <column id="347" parent="318" name="nombre_proveedor">
+      <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>

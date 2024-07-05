@@ -36,6 +36,11 @@ public class CLIENTE extends JFrame {
         btnAgregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                if (txtNombre == null || txtCliente == null || txtDni != null) {
+                    return;
+                }
+
                 String nombre = txtNombre.getText();
                 String direccion = txtCliente.getText();
                 int dni = Integer.parseInt(txtDni.getText());
@@ -54,26 +59,29 @@ public class CLIENTE extends JFrame {
             public void actionPerformed(ActionEvent e) {
 //                ROW SELECTED
                 int row = tblCliente.getSelectedRow();
-                String id = tblCliente.getValueAt(row, 0).toString();
-                String nombre = txtNombre.getText() == null ? tblCliente.getValueAt(row, 1).toString() : txtNombre.getText();
-                String direccion = txtCliente.getText() == null ? tblCliente.getValueAt(row, 2).toString() : txtCliente.getText();
-                int dni = txtDni.getText() == null ? Integer.parseInt(tblCliente.getValueAt(row, 3).toString()) : Integer.parseInt(txtDni.getText());
+                if (row != -1) {
+                    String id = tblCliente.getValueAt(row, 0).toString();
+                    String nombre = txtNombre.getText() == null ? tblCliente.getValueAt(row, 1).toString() : txtNombre.getText();
+                    String direccion = txtCliente.getText() == null ? tblCliente.getValueAt(row, 2).toString() : txtCliente.getText();
+                    int dni = txtDni.getText() == null ? Integer.parseInt(tblCliente.getValueAt(row, 3).toString()) : Integer.parseInt(txtDni.getText());
 
 //                LOAD TXT
-                txtIdCliente.setText(id);
-                txtNombre.setText(nombre);
-                txtCliente.setText(direccion);
-                txtDni.setText(String.valueOf(dni));
+                    txtIdCliente.setText(id);
+                    txtNombre.setText(nombre);
+                    txtCliente.setText(direccion);
+                    txtDni.setText(String.valueOf(dni));
 
-                Cliente cliente = new Cliente(id, nombre, direccion, dni);
+                    Cliente cliente = new Cliente(id, nombre, direccion, dni);
 //
-                try {
-                    ClienteDAO clienteDAO = new ClienteDAO();
-                    clienteDAO.editarCliente(cliente);
-                    createTable();
-                } catch (SQLException | IOException ex) {
-                    throw new RuntimeException(ex);
+                    try {
+                        ClienteDAO clienteDAO = new ClienteDAO();
+                        clienteDAO.editarCliente(cliente);
+                        createTable();
+                    } catch (SQLException | IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
+
             }
         });
 

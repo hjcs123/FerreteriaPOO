@@ -10,11 +10,17 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(int id_producto, double precio_pro, int cantidad, String nombre_producto) {
-        this.id_producto = id_producto;
-        this.precio_pro = precio_pro;
-        this.cantidad = cantidad;
+    public Producto(String nombre_producto, int cantidad, double precio_pro) {
         this.nombre_producto = nombre_producto;
+        this.cantidad = cantidad;
+        this.precio_pro = precio_pro;
+    }
+
+    public Producto(int id_producto, String nombre_producto, int cantidad, double precio_pro) {
+        this.id_producto = id_producto;
+        this.nombre_producto = nombre_producto;
+        this.cantidad = cantidad;
+        this.precio_pro = precio_pro;
     }
 
     public int getId_producto() {

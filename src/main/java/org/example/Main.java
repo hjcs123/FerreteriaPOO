@@ -3,15 +3,9 @@ package org.example;
 import VISTAS.CLIENTE;
 import VISTAS.FERRETERIA;
 import VISTAS.LOGIN;
-import org.example.Beans.Categoria;
-import org.example.Beans.Cliente;
-import org.example.Beans.Producto;
-import org.example.Beans.Proveedor;
+import org.example.Beans.*;
 import org.example.Config.ConnectionBD;
-import org.example.DAO.CategoriaDAO;
-import org.example.DAO.ClienteDAO;
-import org.example.DAO.ProductoDAO;
-import org.example.DAO.ProveedorDAO;
+import org.example.DAO.*;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -21,7 +15,7 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) throws SQLException, IOException {
 
-        /*CategoriaDAO categoriaDAO;
+        CategoriaDAO categoriaDAO;
 
         try {
 
@@ -81,13 +75,19 @@ public class Main {
                 System.out.println(categoria.getId());
             }
 
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            Usuario usuario = new Usuario(
+                    "prueba",
+                    1,
+                    "prueba");
+
+            usuarioDAO.agregarUsuario(usuario);
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
- */
 
 //        public static void main(String[] args) throws SQLException, IOException {
         JFrame frame = new JFrame("LOGIN");
