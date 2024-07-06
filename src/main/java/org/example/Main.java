@@ -61,5 +61,16 @@ public class Main {
         for (Producto p : listaProductos) {
             System.out.println(p.getNombre());
         }
+
+        // Prueba de pila (deshacer)
+        System.out.println("\nEliminando producto con ID '101'");
+        inventario.eliminarProductoPorId("101");
+        System.out.println("Inventario después de eliminar:");
+        inventario.mostrarProductos();
+
+        System.out.println("\nDeshacer última operación:");
+        inventario.deshacerUltimaOperacion();
+        System.out.println("Inventario después de deshacer:");
+        inventario.mostrarProductos();
     }
 }
