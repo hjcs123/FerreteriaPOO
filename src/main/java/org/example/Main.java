@@ -1,101 +1,65 @@
 package org.example;
 
-import VISTAS.CLIENTE;
-import VISTAS.FERRETERIA;
-import VISTAS.LOGIN;
-import org.example.Beans.Categoria;
-import org.example.Beans.Cliente;
-import org.example.Beans.Producto;
-import org.example.Beans.Proveedor;
-import org.example.Config.ConnectionBD;
-import org.example.DAO.CategoriaDAO;
-import org.example.DAO.ClienteDAO;
-import org.example.DAO.ProductoDAO;
-import org.example.DAO.ProveedorDAO;
+import org.example.CLASES.Categoria;
+import org.example.CLASES.Producto;
+import org.example.Operaciones.GestionCategorias;
+import org.example.Operaciones.Inventario;
+import org.example.Utils.Ordenamiento;
 
-import javax.swing.*;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) {
+        Categoria electronica = new Categoria("1", "Electrónica");
+        Categoria muebles = new Categoria("2", "Muebles");
 
-        /*CategoriaDAO categoriaDAO;
+        Producto prod1 = new Producto("101", "Televisor", 500.0, electronica);
+        Producto prod2 = new Producto("102", "Radio", 30.0, electronica);
+        Producto prod3 = new Producto("103", "Laptop", 1000.0, electronica);
+        Producto prod4 = new Producto("201", "Silla", 45.0, muebles);
+        Producto prod5 = new Producto("202", "Mesa", 120.0, muebles);
 
-        try {
+        Inventario inventario = new Inventario();
+        inventario.agregarProducto(prod1);
+        inventario.agregarProducto(prod2);
+        inventario.agregarProducto(prod3);
+        inventario.agregarProducto(prod4);
+        inventario.agregarProducto(prod5);
 
-            ConnectionBD connectionBD = new ConnectionBD();
-            connectionBD.eliminarDatosTables();
+        System.out.println("Inventario de productos:");
+        inventario.mostrarProductos();
 
-            for (int i = 1; i <= 5; i++) {
-                Categoria categoria = new Categoria();
-                categoria.setNombre("Categoria " + i);
-                categoriaDAO = new CategoriaDAO();
-                categoriaDAO.agregarCategoria(categoria);
-            }
+        GestionCategorias gestionCategorias = new GestionCategorias();
+        gestionCategorias.agregarCategoria(electronica);
+        gestionCategorias.agregarCategoria(muebles);
 
-            System.out.println("Categorias creadas");
+        System.out.println("\nCategorías disponibles:");
+        gestionCategorias.mostrarCategorias();
 
-//            CREAR 5 PROVEEDORES
-            for (int i = 1; i <= 5; i++) {
-                Proveedor proveedor = new Proveedor();
-                proveedor.setRuc(123456789 + i);
-                proveedor.setNombre_proveedor("Proveedor " + i);
-                proveedor.setDireccion("Direccion " + i);
-                proveedor.setTelefono(123456789);
-                proveedor.setEmail("proveedor" + i + "@gmail.com");
-                ProveedorDAO proveedorDAO = new ProveedorDAO();
-                proveedorDAO.agregarProveedor(proveedor);
-            }
-
-            System.out.println("Proveedores creados");
-
-//            CREAR 5 PRODUCTOS
-            for (int i = 1; i <= 5; i++) {
-                Producto producto = new Producto();
-                producto.setNombre_producto("Producto " + i);
-                producto.setCantidad(10);
-                producto.setPrecio_pro(10.0);
-                ProductoDAO productoDAO = new ProductoDAO();
-                productoDAO.agregarProducto(producto);
-            }
-
-            System.out.println("Productos creados");
-
-//            CREAR 5 CLIENTES
-            for (int i = 0; i < 5; i++) {
-                Cliente cliente = new Cliente();
-                cliente.setDni(12345678 + i);
-                cliente.setNombre_cliente("Cliente " + i);
-                cliente.setDireccion("Direccion " + i);
-                ClienteDAO clienteDAO = new ClienteDAO();
-                clienteDAO.agregarCliente(cliente);
-            }
-
-            System.out.println("Clientes creados");
-
-            CategoriaDAO categoriaDAO1 = new CategoriaDAO();
-            Map<Integer, Categoria> categorias = categoriaDAO1.buscarCategoriaPorNombre("Categoria");
-            for (Categoria categoria : categorias.values()) {
-                System.out.println(categoria.getId());
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Prueba de búsqueda
+        System.out.println("\nBuscando producto con ID '103':");
+        Producto productoBuscado = inventario.buscarProductoPorId("103");
+        if (productoBuscado != null) {
+            System.out.println("Producto encontrado: " + productoBuscado.getNombre());
+        } else {
+            System.out.println("Producto no encontrado.");
         }
 
+        System.out.println("\nBuscando categoría con ID '2':");
+        Categoria categoriaBuscada = gestionCategorias.buscarCategoriaPorId("2");
+        if (categoriaBuscada != null) {
+            System.out.println("Categoría encontrada: " + categoriaBuscada.getNombre());
+        } else {
+            System.out.println("Categoría no encontrada.");
+        }
 
- */
-
-//        public static void main(String[] args) throws SQLException, IOException {
-        JFrame frame = new JFrame("LOGIN");
-        frame.setContentPane(new LOGIN().panelLogin);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-//        }
-
+        // Prueba de ordenamiento
+        List<Producto> listaProductos = Arrays.asList(prod1, prod2, prod3, prod4, prod5);
+        Ordenamiento.ordenarPorNombre(listaProductos);
+        System.out.println("\nProductos ordenados por nombre:");
+        for (Producto p : listaProductos) {
+            System.out.println(p.getNombre());
+        }
     }
 }
