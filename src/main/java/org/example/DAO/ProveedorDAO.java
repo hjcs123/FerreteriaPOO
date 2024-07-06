@@ -8,6 +8,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class ProveedorDAO {
 
@@ -19,9 +20,8 @@ public class ProveedorDAO {
         this.connection = new ConnectionBD();
     }
 
-    public Proveedor[] getProveedores() throws SQLException {
-
-        Proveedor[] proveedores = new Proveedor[10];
+    public HashMap<Integer, Proveedor> getProveedores() throws SQLException {
+        HashMap<Integer, Proveedor> proveedores = new HashMap<>();
         try {
             // Crear la conexión
             Connection conn = connection.getConnection();
@@ -32,8 +32,6 @@ public class ProveedorDAO {
             // Ejecutar la consulta
             result = call.executeQuery();
 
-            // Contador para el arreglo
-            int i = 0;
             // Recorrer el resultado
             while (result.next()) {
                 // Crear un objeto Proveedor
@@ -47,9 +45,8 @@ public class ProveedorDAO {
                 proveedor.setTelefono(result.getInt("telefono"));
                 proveedor.setDireccion(result.getString("direccion"));
 
-                // Agregar el proveedor al arreglo
-                proveedores[i] = proveedor;
-                i++;
+                // Agregar el proveedor al HashMap
+                proveedores.put(proveedor.getId_proveedor(), proveedor);
             }
             // Cerrar la conexión
             conn.close();

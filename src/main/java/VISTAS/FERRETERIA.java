@@ -10,7 +10,6 @@ public class FERRETERIA extends JFrame {
     public JPanel panelMain;
     private JButton btnBoleta;
     private JButton btnInventario;
-    private JButton btnProducto;
     private JButton btnProveedor;
     private JButton btnUsuario;
     private JLabel lblTitulo;
@@ -50,6 +49,39 @@ public class FERRETERIA extends JFrame {
                     throw new RuntimeException(ex);
                 }
 
+            }
+        });
+        btnInventario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("INVENTARIO");
+                try {
+                    frame.setContentPane(new PRODUCTO().panel);
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.pack();
+                    frame.setVisible(true);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+        btnProveedor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("PROVEEDOR");
+                try {
+                    frame.setContentPane(new PROVEEDOR().panel);
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.pack();
+                    frame.setVisible(true);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }

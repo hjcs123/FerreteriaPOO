@@ -8,6 +8,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ProductoDAO {
 
@@ -19,8 +22,8 @@ public class ProductoDAO {
         this.connection = new ConnectionBD();
     }
 
-    public Producto[] getProductos() throws SQLException {
-        Producto[] productos = new Producto[10];
+    public HashMap<Integer, Producto> getProductos() throws SQLException {
+        HashMap<Integer, Producto> productos = new HashMap<>();
         try {
             // Crear la conexión
             Connection conn = connection.getConnection();
@@ -31,8 +34,6 @@ public class ProductoDAO {
             // Ejecutar la consulta
             result = call.executeQuery();
 
-            // Contador para el arreglo
-            int i = 0;
             // Recorrer el resultado
             while (result.next()) {
                 // Crear un objeto Producto
@@ -44,9 +45,8 @@ public class ProductoDAO {
                 producto.setCantidad(result.getInt("cantidad"));
                 producto.setPrecio_pro(result.getDouble("precio"));
 
-                // Agregar el producto al arreglo
-                productos[i] = producto;
-                i++;
+                // Agregar el producto al HashMap
+                productos.put(producto.getId_producto(), producto);
             }
             // Cerrar la conexión
             conn.close();
@@ -115,4 +115,28 @@ public class ProductoDAO {
             throw e;
         }
     }
+
+    public HashMap<Integer, Producto> ordenarProductosPorNombreBurbuja(HashMap<Integer, Producto> productos) {
+
+        List<Producto> listaProductos = new ArrayList<>(productos.values());
+
+        int n = listaProductos.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (listaProductos.get(j).getNombre_producto().compareTo(listaProductos.get(j + 1).getNombre_producto()) > 0) {
+                    Producto temp = listaProductos.get(j);
+                    listaProductos.set(j, listaProductos.get(j + 1));
+                    listaProductos.set(j + 1, temp);
+                }
+            }
+        }
+        productos.clear();
+        for (Producto producto : listaProductos) {
+            productos.put(producto.getId_producto(), producto);
+        }
+
+        return productos;
+    }
+
+
 }
